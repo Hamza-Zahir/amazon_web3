@@ -1,23 +1,36 @@
 $orange: #eea23f;
 
-
-.bg_orongr{
-background-color: $orange;
+.bg_orongr {
+  background-color: $orange;
 }
-.tx_orongr{
+.tx_orongr {
   color: $orange;
-  }
-.cp{
-cursor: pointer;
 }
-.rounded-8{
+.cp {
+  cursor: pointer;
+}
+.fs-14 {
+  font-size: 14px;
+}
+
+.Link {
+  text-decoration: none !important;
+  &:hover {
+    text-decoration: underline !important;
+    color: #f55a5a;
+  }
+}
+.boxsh {
+  box-shadow: 0px 0px 3px 0px black;
+}
+.rounded-8 {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   -ms-border-radius: 8px;
   -o-border-radius: 8px;
   border-radius: 8px;
 }
-.rounded-10{
+.rounded-10 {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;

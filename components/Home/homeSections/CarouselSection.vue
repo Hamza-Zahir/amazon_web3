@@ -27,8 +27,10 @@
 $main-margin: -120px;
 .slider {
   margin-bottom: $main-margin;
-  min-height: 300px;
+   min-height: 200px;
+  max-height: 300px;
   position: relative;
+  z-index: -1;
 
   .img {
     width: 100%;
