@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {  mapGetters } from "vuex";
 
 export default {
   props: {
@@ -56,12 +56,7 @@ export default {
   computed: {
     ...mapGetters(["Country"]),
   },
-  mounted() {
-    this.getCountry();
-  },
-  methods: {
-    ...mapActions(["getCountry"]),
-  },
+
 };
 </script>
 <style lang="scss" scoped>

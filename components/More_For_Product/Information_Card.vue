@@ -1,0 +1,132 @@
+<template>
+  <div>
+    <div class="text-danger d-none d-lg-block">${{ current_price }}</div>
+
+    <ShippingDetails :price="current_price" />
+    <div class="my-2">
+      Delivery
+      <span class="fw-bold">
+        {{ minDeliveryMonth }} {{ minDeliveryDay }} -
+        {{ minDeliveryMonth !== maxDeliveryMonth ? maxDeliveryMonth : "" }}
+        {{ maxDeliveryDay }}
+      </span>
+    </div>
+    <div class="Location fw-bold fs_14">
+      <b-icon icon="geo-alt" class=""></b-icon>
+        Deliver to {{Country}}
+    </div>
+    <h4 class="text-success my-2">In Stock.</h4>
+    <div class="custom-select">
+      Qty:
+      <select name="Product_Number" id="Product_Number">
+        <option v-for="i in 30" :key="i" :value="i" class="p-2">{{ i }}</option>
+      </select>
+    </div>
+    <div class="btn Add_btn">Add to card</div>
+    <div class="btn Buy_btn">Buy Now</div>
+
+    <a href="#">
+      <b-icon icon="lock-fill" class=""></b-icon>
+
+      Secure transaction
+    </a>
+  </div>
+</template>
+<script>
+import { mapActions, mapGetters } from "vuex";
+import ShippingDetails from "./ShippingDetails.vue"
+let minDeliveryDate = +new Date() + 7 * 86400000;
+let minDeliveryDay = new Date(minDeliveryDate).toDateString().split(" ")[2];
+let minDeliveryMonth = new Date(minDeliveryDate).toDateString().split(" ")[1];
+let maxDeliveryDate = +new Date() + 14 * 86400000;
+let maxDeliveryDay = new Date(maxDeliveryDate).toDateString().split(" ")[2];
+let maxDeliveryMonth = new Date(maxDeliveryDate).toDateString().split(" ")[1];
+export default {
+  components:{
+    ShippingDetails
+  },
+   computed: {
+    ...mapGetters(["Country"]),
+  },
+  data() {
+    return {
+      minDeliveryMonth,
+      minDeliveryDay,
+      maxDeliveryMonth,
+      maxDeliveryDay,
+    };
+  },
+ 
+  props: {
+    current_price: {
+      required: true,
+      type: Number,
+    },
+    // productName: {
+    //   required: true,
+    //   type: Array,
+    // },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.Location {
+  color: #0e62df;
+  cursor: pointer;
+}
+.custom-select {
+  margin: 15px 0;
+  background-color: #d2e9fc;
+  position: relative;
+  width: fit-content;
+  position: relative;
+  z-index: 0;
+  padding: 0 5px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+
+  select {
+    background-color: inherit;
+    outline: none;
+    width: 80px;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    padding-left: 35px;
+    -webkit-border-radius: inherit;
+    -moz-border-radius: inherit;
+    -ms-border-radius: inherit;
+    -o-border-radius: inherit;
+    border-radius: inherit;
+    option {
+      background-color: white;
+    }
+  }
+}
+
+.btn {
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border-radius: 20px;
+  margin: 15px auto;
+  display: block;
+  width: 90%;
+  font-weight: 500;
+}
+.Add_btn {
+  background-color: #ffe600;
+}
+.Buy_btn {
+  background-color: #ff9100;
+}
+
+a {
+  text-decoration: none;
+}
+</style>

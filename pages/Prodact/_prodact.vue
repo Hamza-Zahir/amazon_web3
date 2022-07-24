@@ -1,56 +1,49 @@
 <template>
   <div class="">
-    {{ this.$route.params.prodact }}
+    <Head :items="items" :Product="itemName" />
 
-
+    <Item_Card :item="item" :productName="[itemName, index]" />
 
   </div>
 </template>
 <script>
 import Products from "~/json/Products.json";
-import Product_Card from "~/components/cards/Product_Card.vue";
-import Sidbar from "~/components/Show_prodacts/Sidbar.vue";
+import Head from "~/components/More_For_Product/Head.vue";
+import Item_Card from "~/components/More_For_Product/Item_Card.vue";
 
 export default {
   components: {
-    Product_Card,
-    Sidbar,
+    Head,
+    Item_Card,
   },
   data() {
     return {
       Products,
-      // items: "",
-      // title: "",
+      items: [],
+      item: {},
+      itemName: "",
+      index: "",
     };
   },
-  // mounted() {
-  //   this.handelParams();
-  // },
-  // methods: {
-  //   handelParams() {
-  //     const itemName = this.$route.params.prodact;
-  //     if (itemName.split("+")[1]) {
-  //       this.items = Products[itemName.split("+")[0]][itemName.split("+")[1]];
-  //       this.title = itemName.split("+")[1].replaceAll("_", " ");
-  //     } else {
-  //       this.items = Products[itemName];
-  //       this.title = itemName.replaceAll("_", " ");
-  //     }
-  //   },
-  // },
+  mounted() {
+    this.handelParams();
+  },
+  methods: {
+    handelParams() {
+      const itemName = this.$route.params.prodact.split(">")[0];
+      const index = this.$route.params.prodact.split(">")[1];
+      this.index = index;
+      this.itemName = itemName;
+      if (itemName.split("+")[1]) {
+        this.items = Products[itemName.split("+")[0]][itemName.split("+")[1]];
+      } else {
+        this.items = Products[itemName];
+      }
+      this.item = this.items[index - 1];
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
-.Show_prodacts {
-  .results {
-    width: 100%;
-  }
-  .sidbar {
-    width: 200px;
-    padding: 10px;
-    @media (min-width: 1000px) {
-      width: 300px;
-    }
-  }
-}
+
 </style>
