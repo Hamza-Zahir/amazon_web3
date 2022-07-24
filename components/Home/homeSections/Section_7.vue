@@ -25,33 +25,40 @@
         >
           &lt;
         </div>
+          <div
+          v-for="(Product, i) in Products.Gaming.Gaming_Mice"
+          :key="`Gaming_Mice_${i + 1}`"
+          class=""
+        >
+          <BrowsingCard :prodact="Product" prodactName="Gaming+Gaming_Mice"  />
+        </div>
         <div
-          v-for="(Product, i) in Products.Gaming"
+          v-for="(Product, i) in Products.Gaming.Laptops"
           :key="`GamingProdact_${i + 1}`"
           class=""
         >
-          <BrowsingCard :prodact="Product[2]" />
+          <BrowsingCard :prodact="Product" prodactName="Gaming+Laptops"  />
         </div>
         <div
           v-for="(Product, i) in Products.Night_Lights"
           :key="`Night_LightsProdact_${i + 1}`"
           class=""
         >
-          <BrowsingCard :prodact="Product" />
+          <BrowsingCard :prodact="Product" prodactName="Night_Lights" />
         </div>
         <div
           v-for="(Product, i) in Products.Computers"
           :key="`ComputersProdact_${i + 1}`"
           class=""
         >
-          <BrowsingCard :prodact="Product" />
+          <BrowsingCard :prodact="Product" prodactName="Computers" />
         </div>
         <div
           v-for="(Product, i) in Products.Laptops"
           :key="`LaptopsProdact_${i + 1}`"
           class=""
         >
-          <BrowsingCard :prodact="Product" />
+          <BrowsingCard :prodact="Product" prodactName="Laptops" />
         </div>
 
       </div>

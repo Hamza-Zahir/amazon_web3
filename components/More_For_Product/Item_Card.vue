@@ -118,7 +118,6 @@ Information_Card
   padding: 10px 0;
   background-color: white;
   display: flex;
-  margin-top: 50px;
   .description {
     font-size: 1.2rem;
     line-height: 30px;

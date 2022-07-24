@@ -91,13 +91,13 @@ const actions = {
         commit("setChainId", Number(resalt));
       });
 
-    //   const _userBlance = await plugins.getUserBalance(accounts[0]);
-    //   commit("setUserBlance", _userBlance);
+      //   const _userBlance = await plugins.getUserBalance(accounts[0]);
+      //   commit("setUserBlance", _userBlance);
     }
     async function handleAccountsChanged(accounts) {
       commit("setCurrentAccount", accounts[0]);
-    //   const _userBlance = await plugins.getUserBalance(accounts[0]);
-    //   commit("setUserBlance", _userBlance);
+      //   const _userBlance = await plugins.getUserBalance(accounts[0]);
+      //   commit("setUserBlance", _userBlance);
     }
     function handleChainChanged(_chainId) {
       window.location.reload();
@@ -111,13 +111,11 @@ const actions = {
     ethereum.on("disconnect", handleDisconnect);
   },
 
-  async getCountry({commit}){
-   await axios.get("http://ip-api.com/json").then((response) => {
+  async getCountry({ commit }) {
+    await axios.get("http://ip-api.com/json").then((response) => {
       commit("setCountry", response.data.country);
     });
-
-  }
-
+  },
 };
 const mutations = {
   setCurrentAccount: (state, addres) => (state.CurrentAccount = addres),

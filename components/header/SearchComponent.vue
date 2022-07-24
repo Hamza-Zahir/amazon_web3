@@ -1,6 +1,6 @@
 <template>
   <div class="Header_search rounded-8">
-    <select class="d-none d-lg-block cp p-2">
+    <select class="d-none d-md-block cp p-2">
       <option v-for="option in Options" :key="option.id" :value="option.option">
         {{ option.option }}
       </option>
@@ -38,7 +38,7 @@ export default {
     border: none;
     outline: none;
     height: 100%;
-    max-width: 200px;
+    max-width: 170px;
   }
   .search_input {
     border: none;

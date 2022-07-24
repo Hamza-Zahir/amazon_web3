@@ -1,6 +1,36 @@
 <template>
   <div class="bg-muted Head">
-    <div class="carousel Carousel" data-bs-ride="carousel">
+    <!-- .......................-->
+    <b-carousel fade class="slider Carousel" indicators="">
+
+      <b-carousel-slide
+        v-for="(item, i) in items"
+        :key="item.position"
+        :class="i === 0 ? 'active' : ''"
+        class="carousel-item"
+        img-src=""
+      >
+        <nuxt-link :to="`/Prodact/${Product}/${item.position}`" class="item">
+          <span class="img">
+            <img :src="item.img" alt="" />
+          </span>
+          <span class="text">{{ item.description }}</span>
+          <div class="text-center p-0 m-0">
+            <div class="starts">
+              <b-icon icon="star-fill" class="text-warning"></b-icon>
+              <b-icon icon="star-fill" class="text-warning"></b-icon>
+              <b-icon icon="star-fill" class="text-warning"></b-icon>
+              <b-icon icon="star-half" class="text-warning"></b-icon>
+              <b-icon icon="star" class="text-warning"></b-icon>
+            </div>
+            <span class="price"> <sup>$</sup> {{ item.current_price }} </span>
+          </div>
+        </nuxt-link>
+      </b-carousel-slide>
+    </b-carousel>
+
+    <!-- ..................... -->
+    <!-- <div class="carousel Carousel" data-bs-ride="carousel">
       <div
         v-for="(item, i) in items"
         :key="item.position"
@@ -24,11 +54,14 @@
           </div>
         </nuxt-link>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
+// const carousel = require("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js") ;
+
 export default {
+  // components: { },
   data() {
     return {};
   },
@@ -45,12 +78,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+
 .Head {
   padding-bottom: 2px;
   padding-top: 2px;
   .Carousel {
     margin: 0 auto;
     max-width: 500px;
+.carousel-item {
+    height: 50px;
+  }
     .item {
       font-size: 0.8rem;
       text-decoration: none;
@@ -60,6 +98,7 @@ export default {
       max-width: 500px;
       height: 50px;
       margin: 0 auto;
+      transform: translateY(40px);
       .img {
         display: inline-block;
         width: 100px;

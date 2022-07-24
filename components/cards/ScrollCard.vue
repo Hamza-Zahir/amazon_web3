@@ -34,7 +34,7 @@
         v-for="item in card.items"
         :key="item.position"
         class="link"
-        to=""
+        :to="`/Prodact/${card.keyname}>${item.position}`"
       >
         <img :src="item.img" alt="" />
       </nuxt-link>

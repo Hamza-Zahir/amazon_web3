@@ -6,10 +6,19 @@
 
     <div class="d-flex flex-column justify-content-between">
       <div class="Semplcard w-100">
-        <h2 class="h4 fw-bold">Sign in for the best experience</h2>
-        <nuxt-link to="/" class="btn btn-warning w-100 my-1 p-1">
-          Sing in securely
-        </nuxt-link>
+        <div v-if="!CurrentAccount" class="">
+          <h2 class="h4 fw-bold">Conect your wallet for the best experience</h2>
+          <div class="btn btn-warning w-100 my-1 p-1" @click="connectMetamask">
+            Conect your wallet
+          </div>
+        </div>
+        <div v-if="CurrentAccount" class="">
+          <h2 class="h4 fw-bold">You can switch the network from here</h2>
+          <div class="w-100 my-1 p-1">
+<Switsh_Network_btn/>
+
+          </div>
+        </div>
       </div>
       <img
         class="w-100 mt-2"
@@ -27,9 +36,13 @@
   </div>
 </template>
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 import Products from "~/json/Products.json";
 import CardGroup from "../../cards/CardGroup.vue";
 import SemplCard from "../../cards/SemplCard.vue";
+import Switsh_Network_btn from "../../changeNetwork.vue";
+
 const card_1 = {
   title: "Gaming accessories",
   item1_img: Products.Gaming.Headsets[0].img,
@@ -66,14 +79,13 @@ const card_2 = {
   item4_title: "Toys & Games",
   link: "Shop now",
   center_text: "text-center",
-  page: "",
+  page: "Show_prodacts/Amazon_Basics",
 };
 const card_3 = {
-  title: "AmazonBasics",
-  img_sec:
-    "https://images-na.ssl-images-amazon.com/images/G/01/AmazonExports/Fuji/2019/July/amazonbasics_520x520._SY304_CB442725065_.jpg",
+  title: "Tablets",
+  img_sec: "https://m.media-amazon.com/images/I/71QcHsW-dSL._AC_UY218_.jpg",
   link: "See more",
-  page: "Show_prodacts/Amazon_Basics",
+  page: "Show_prodacts/Tablets",
 };
 const card_4 = {
   title: "Electronics",
@@ -114,6 +126,7 @@ export default {
   components: {
     CardGroup,
     SemplCard,
+    Switsh_Network_btn
   },
   data() {
     return {
@@ -127,6 +140,14 @@ export default {
       card_7,
       card_8,
     };
+  },
+  computed: {
+    ...mapGetters(["CurrentAccount"]),
+    ...mapGetters(["ChainId"]),
+  },
+  mounted() {},
+  methods: {
+    ...mapActions(["connectMetamask"]),
   },
 };
 </script>

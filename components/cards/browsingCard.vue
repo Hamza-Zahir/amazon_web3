@@ -1,9 +1,11 @@
 <template>
   <div class="browsingCard m-3">
     <div class="img text-center">
+      <nuxt-link :to="`/Prodact/${prodactName}>${prodact.position}`">
       <img :src="prodact.img" alt="" />
+      </nuxt-link>
     </div>
-    <nuxt-link class="description px-2 pt-2" :to="``">
+    <nuxt-link class="description px-2 pt-2" :to="`/Prodact/${prodactName}>${prodact.position}`">
       {{ prodact.description }}
     </nuxt-link>
     <div class="start px-2">
@@ -28,11 +30,16 @@
   </div>
 </template>
 <script>
+
 export default {
   props: {
     prodact: {
       required: true,
       type: Object,
+    },
+     prodactName: {
+      required: true,
+      type: String,
     },
   },
 };

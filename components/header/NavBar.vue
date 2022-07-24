@@ -13,10 +13,7 @@
 </template>
 
 <style lang="scss" scoped>
-.NavBar.NavBar::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
+
 
 .NavBar {
   background-color: #121f31;
@@ -26,6 +23,10 @@
   flex-wrap: nowrap;
   width: 100%;
   overflow: scroll;
+&::-webkit-scrollbar {
+  display: none;
+}
+
 
   .link {
     text-decoration: none;

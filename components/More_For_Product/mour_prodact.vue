@@ -1,6 +1,6 @@
 <template>
   <div class="Section_7">
-    <div class="card_scroll px-5 ">
+    <div class="card_scroll px-5">
       <h4 class="fw-bold">Inspired by your browsing history</h4>
       <div class="content border-top mt-4">
         <div
@@ -25,43 +25,37 @@
         >
           &lt;
         </div>
-        <div
-          v-for="(Product, i) in Products.Baby_Products"
-          :key="`Baby_Products_${i + 1}`"
+          <div
+          v-for="(Product, i) in items"
+          :key="`Gaming_Mice_${i + 1}`"
           class=""
         >
-          <BrowsingCard :prodact="Product" prodactName="Baby_Products" />
+          <BrowsingCard :prodact="Product" :prodactName="prodactName"  />
         </div>
-        <div
-          v-for="(Product, i) in Products.Fitness"
-          :key="`FitnessProdact_${i + 1}`"
-          class=""
-        >
-          <BrowsingCard :prodact="Product" prodactName="Fitness" />
-        </div>
-        <div
-          v-for="(Product, i) in Products.Kitchen"
-          :key="`KitchenProdact_${i + 1}`"
-          class=""
-        >
-          <BrowsingCard :prodact="Product"  prodactName="Kitchen"/>
-        </div>
-        <div
-          v-for="(Product, i) in Products.Pet_Supplies"
-          :key="`Pet_SuppliesProdact_${i + 1}`"
-          class=""
-        >
-          <BrowsingCard :prodact="Product" prodactName="Pet_Supplies" />
-        </div>
+
+
+
+
+
       </div>
     </div>
   </div>
 </template>
 <script>
 import Products from "~/json/Products.json";
-import BrowsingCard from "../../cards/browsingCard.vue";
+import BrowsingCard from "../cards/browsingCard.vue";
 
 export default {
+    props: {
+    items: {
+      required: true,
+      type: Array,
+    },
+ prodactName: {
+      required: true,
+      type: String,
+    },
+  },
   components: {
     BrowsingCard,
   },
@@ -77,7 +71,7 @@ export default {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows:  1fr;
   gap: 15px;
   padding: 15px 0 0 0;
 

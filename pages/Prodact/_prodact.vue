@@ -3,6 +3,7 @@
     <Head :items="items" :Product="itemName" />
 
     <Item_Card :item="item" :productName="[itemName, index]" />
+<Mour_Prodact :items="items"  :prodactName="itemName" />
 
   </div>
 </template>
@@ -10,11 +11,13 @@
 import Products from "~/json/Products.json";
 import Head from "~/components/More_For_Product/Head.vue";
 import Item_Card from "~/components/More_For_Product/Item_Card.vue";
+import Mour_Prodact from "~/components/More_For_Product/mour_prodact.vue";
 
 export default {
   components: {
     Head,
     Item_Card,
+    Mour_Prodact,
   },
   data() {
     return {
@@ -44,6 +47,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

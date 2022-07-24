@@ -14,8 +14,7 @@ const card_1 = {
 };
 
 const card_2 = {
-  
-    items: Products.Top_sellers_in_home,
+  items: Products.Top_sellers_in_home,
   keyname: "Top_sellers_in_home",
   title: "International top sellers in Home",
 };
@@ -30,7 +29,6 @@ export default {
       card_2,
     };
   },
-
 };
 </script>
 <style lang="scss" scoped>

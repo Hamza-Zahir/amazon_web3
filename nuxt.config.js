@@ -15,9 +15,8 @@ export default {
     script: [
       {
         src: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js",
-        // integrity:
-        //   "sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13",
-        // crossorigin: "anonymous",
+        integrity:"sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13",
+        crossorigin: "anonymous",
       },
     ],
   },
@@ -26,7 +25,9 @@ export default {
   css: ["~/assets/style/main.scss", "~/assets/style/global.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: "~/plugins/index.js", ssr: false }],
+  plugins: [
+    { src: "~/plugins/index.js", ssr: false },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

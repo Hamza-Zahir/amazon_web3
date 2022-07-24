@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn wllet-btn text-light mx-1 mx-md-2"
+    class="fs-14 btn wllet-btn text-light mx-1 mx-md-2"
     :class="CurrentAccount && !corectChainId() ? 'btn-warning' : ''"
     @click="
       () => {
