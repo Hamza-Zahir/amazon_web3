@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "amazon web3",
+    title: "9 amazon web3",
     htmlAttrs: {
       lang: "en",
     },

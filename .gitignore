@@ -93,3 +93,7 @@ sw.*
 ._etherscan_API_KEY
 ._bscscan_api_key
 ._secret
+
+.etherscan_API_KEY
+.bscscan_api_key
+.secret
