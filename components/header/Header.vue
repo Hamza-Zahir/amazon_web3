@@ -25,11 +25,11 @@
 
           <Wallet_btn />
 
-          <nuxt-link to="/cart" class="text-light td-none Link cart">
+          <nuxt-link to="/Cart" class="text-light td-none Link cart">
             <div class="Header_ShoppingCart d-flex befor p-2">
               <div class="option_one">
                 <span class="h5 fw-bol tx_orongr">
-                  0
+                  {{numberOfAllitems}}
                 </span>
               </div>
               <span class="align-self-end fw-bold d-none d-sm-block ps-1">Cart</span>
@@ -77,6 +77,7 @@ export default {
   computed: {
     ...mapGetters(["Country"]),
     ...mapGetters(["CurrentAccount"]),
+    ...mapGetters(["numberOfAllitems"]),
   },
   mounted() {
     this.getCountry();

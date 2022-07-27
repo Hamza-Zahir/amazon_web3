@@ -96,7 +96,7 @@ contract Amazon is Authorized {
                 keccak256(
                     abi.encodePacked(CartItemsOfOwner[msg.sender][i].itemName)
                 ) ==
-                keccak256(abi.encodePacked(_itemName)) ||
+                keccak256(abi.encodePacked(_itemName)) &&
                 CartItemsOfOwner[msg.sender][i].Quantity != _Quantity
             ) {
                 CartItemsOfOwner[msg.sender][i].Quantity = _Quantity;
@@ -112,7 +112,7 @@ contract Amazon is Authorized {
                 keccak256(
                     abi.encodePacked(CartItemsOfOwner[msg.sender][i].itemName)
                 ) ==
-                keccak256(abi.encodePacked(_itemName)) ||
+                keccak256(abi.encodePacked(_itemName)) &&
                 CartItemsOfOwner[msg.sender][i].isGeft != _isGeft
             ) {
                 CartItemsOfOwner[msg.sender][i].isGeft = _isGeft;
@@ -120,7 +120,7 @@ contract Amazon is Authorized {
         }
     }
 
-  function isUsersHasItemsInCart(address _user)
+    function isUsersHasItemsInCart(address _user)
         public
         view
         returns (bool _hasItemsInCart)
@@ -136,11 +136,11 @@ contract Amazon is Authorized {
     function getCartItemsOfOwner(address _userAddress)
         public
         view
-        returns (CartItem[] memory _CartItemsOfOwner )
+        returns (CartItem[] memory _CartItemsOfOwner)
     {
-      if(isUsersHasItemsInCart(_userAddress)){
-        _CartItemsOfOwner = CartItemsOfOwner[_userAddress];
-      }
+        if (isUsersHasItemsInCart(_userAddress)) {
+            _CartItemsOfOwner = CartItemsOfOwner[_userAddress];
+        }
         return _CartItemsOfOwner;
     }
 
@@ -156,16 +156,18 @@ contract Amazon is Authorized {
         }
         return _UsersHasOrders;
     }
- function getUsersOrders(address _userAddress)
+
+    function getUsersOrders(address _userAddress)
         public
         view
         returns (order[] memory _orders)
     {
-      if(isUsersHasOrders(_userAddress)){
-        _orders = UsersOrders[_userAddress];
-      }
+        if (isUsersHasOrders(_userAddress)) {
+            _orders = UsersOrders[_userAddress];
+        }
         return _orders;
     }
+
     function buyItem(
         string memory _itemName,
         string memory _DeliveryAddress,
@@ -182,9 +184,46 @@ contract Amazon is Authorized {
         UsersWhoRequested.push(msg.sender);
     }
 
+    function buyItems(
+        string[] memory _itemsName,
+        string[] memory _DeliveryAddress,
+        string[] memory _messages,
+        uint256[] memory _Quantitys,
+        bool[] memory _isGeft
+    ) public payable {
+        uint256 _itemsInStoke;
+        uint256 _totalAmounts;
+        for (uint256 i = 0; i < _itemsName.length; i++) {
+            _totalAmounts =
+                _totalAmounts +
+                itemsInStoke[_itemsName[i]] *
+                _Quantitys[i];
+
+            if (itemsInStoke[_itemsName[i]] > 0) {
+                _itemsInStoke++;
+            }
+        }
+
+        require(_itemsInStoke == _itemsName.length);
+        require(msg.value >= _totalAmounts);
+
+        for (uint256 j = 0; j < _itemsName.length; j++) {
+            UsersOrders[msg.sender].push(
+                order(
+                    _itemsName[j],
+                    _Quantitys[j],
+                    _DeliveryAddress[j],
+                    _messages[j],
+                    _isGeft[j]
+                )
+            );
+        }
+        UsersWhoRequested.push(msg.sender);
+    }
+
     // check Users Orders of adderss is it empty
     function checkUsersOrders(address _user) private {
-         uint256 _UsersOrders;
+        uint256 _UsersOrders;
         for (uint256 i = 0; i < UsersOrders[_user].length; i++) {
             if (UsersOrders[_user][i].Quantity != 0) {
                 _UsersOrders++;

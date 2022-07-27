@@ -9,11 +9,12 @@
       </div>
       <div class="d-flex my-1">
         <div class="sidbar d-none d-sm-block">
-          <Sidbar/>
-
+          <Sidbar />
         </div>
         <div class="results">
-          <Product_Card :items="items" :itemName="itemName" />
+          <div v-if="items.length">
+            <Product_Card :items="items" :itemName="this.$route.params.prodact" />
+          </div>
         </div>
       </div>
     </div>
@@ -27,14 +28,12 @@ import Sidbar from "~/components/Show_prodacts/Sidbar.vue";
 export default {
   components: {
     Product_Card,
-    Sidbar
+    Sidbar,
   },
   data() {
     return {
-      Products,
-      items: "",
+      items: [],
       title: "",
-      itemName:"",
     };
   },
   mounted() {
@@ -43,7 +42,6 @@ export default {
   methods: {
     handelParams() {
       const itemName = this.$route.params.prodact;
-      this.itemName = itemName
       if (itemName.split("+")[1]) {
         this.items = Products[itemName.split("+")[0]][itemName.split("+")[1]];
         this.title = itemName.split("+")[1].replaceAll("_", " ");

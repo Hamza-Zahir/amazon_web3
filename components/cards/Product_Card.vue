@@ -1,7 +1,7 @@
 <template>
   <div class="Product_Cards">
     <h4 class="m-2">RESULTS</h4>
-    <div v-for="item in items" :key="item.position" class="Product_Card">
+    <div v-for="item in items" :key="`item-${item.position}`" class="Product_Card">
       <nuxt-link :to="`/Prodact/${itemName}>${item.position}`" class="img_link">
         <img :src="item.img" alt="img" />
       </nuxt-link>
@@ -14,8 +14,6 @@
           {{ item.description }}
         </nuxt-link>
         <div class="starts text-warning">
-          <StarHalfIcon />
-          <StarOutlineIcon />
           <b-icon icon="star-fill" class="text-warning"></b-icon>
           <b-icon icon="star-fill" class="text-warning"></b-icon>
           <b-icon icon="star-fill" class="text-warning"></b-icon>

@@ -1,28 +1,20 @@
 <template>
   <div class="d-md-flex flex-row-reverse mx-2 mx-md-3 my-3 my-md-4 p-0">
     <div class="sibar col-md-4 col-xl-3 ps-md-3">
-      <div v-if="items.length">
+      <div v-if="numberOfAllitems">
         <div class="card mb-3 p-3">
           <div class="subtotal h6">
-            Subtotal ({{ itemsQuantity }} items):
+            Subtotal ({{ numberOfAllitems }} items):
             <span class="fw-bold h5">
               <sup>$</sup>
-              {{calcTotalPrices()}}
+              {{ calcTotalPrices(itemsOfUser) }}
             </span>
           </div>
-
-          <div>
-            <input
-              type="checkbox"
-              id="order_contains"
-              name="subscribe"
-              value=""
-              class="me-2"
-            />
-            <label for="order_contains" class="fs-14">
-              This order contains a gift
-            </label>
+<!-- v-if="orderContainsAGift" -->
+          <div class="my-2" >
+            This order contains a gift
           </div>
+
           <div class="btn btn-warning mt-3">Proceed to checkout</div>
         </div>
         <div class="card mb-3 p-3">
@@ -33,19 +25,26 @@
       </div>
     </div>
     <div class="card p-3 col">
-      <div v-if="items.length">
+      <div v-if="numberOfAllitems">
         <h4>Shopping Cart</h4>
         <div class="border-bottom"></div>
         <div class="">
-          <div v-for="item in items" :key="`item-${item.position}`" class="">
+          <div
+            v-for="item in manageItems(itemsOfUser)"
+            :key="`item-${item.position}`"
+            class=""
+          >
             <shopping_card :item="item" />
           </div>
         </div>
-        <h5 class="text-end fw-bold">Subtotal ({{items.length}} items): ${{calcTotalPrices()}}</h5>
-
+        <h5 class="text-end fw-bold">
+          Subtotal ({{ numberOfAllitems }} items): ${{
+            calcTotalPrices(itemsOfUser)
+          }}
+        </h5>
       </div>
       <div
-        v-if="!items.length"
+        v-if="!numberOfAllitems"
         class="empty_Cart d-flex align-items-center flex-wrap"
       >
         <div class="col-12 col-sm-7 col-md-5 mx-auto">
@@ -74,19 +73,14 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
-
+import { mapGetters } from "vuex";
 import Prodacts from "~/json/Products.json";
 import shopping_card from "~/components/cart/shopping_card.vue";
-const items = [
-  Prodacts.Gaming.Hats[1],
-  Prodacts.Gaming.Hats[5],
-  Prodacts.Gaming.Hats[6],
-];
+
 export default {
   data() {
     return {
-      items,
+      orderContainsAGift: false,
     };
   },
   components: {
@@ -95,16 +89,51 @@ export default {
   computed: {
     ...mapGetters(["CurrentAccount"]),
     ...mapGetters(["ChainId"]),
-    // ...mapGetters(["userBlance"]),
+    ...mapGetters(["itemsOfUser"]),
+    ...mapGetters(["numberOfAllitems"]),
   },
   methods: {
-    ...mapActions(["connectMetamask"]),
-
+    getItem(itemName) {
+      let _item;
+      let _itemName = itemName.split(">")[0];
+      let _itemIndex = itemName.split(">")[1];
+      if (_itemName.split("+")[1]) {
+        _item =
+          Prodacts[_itemName.split("+")[0]][_itemName.split("+")[1]][
+            _itemIndex - 1
+          ];
+      } else {
+        _item = Prodacts[_itemName][_itemIndex - 1];
+      }
+      return _item;
+    },
+    manageItems(_itemsOfUser) {
+      let _items = [];
+      this.orderContainsAGift = false;
+      _itemsOfUser.map((e) => {
+        if (e.isGeft) {
+          this.orderContainsAGift = true;
+        }
+        if (e.Quantity > 0) {
+          _items.push({
+            ...{
+              inStoke: e.inStoke,
+              isGeft: e.isGeft,
+              Quantity: e.Quantity,
+              itemName: e.itemName,
+            },
+            ...this.getItem(e.itemName),
+          });
+          if (e.isGeft) {
+            this.orderContainsAGift = true;
+          }
+        }
+      });
+      return _items;
+    },
     corectChainId() {
       if (
         this.ChainId == 97 ||
-        this.ChainId == 59 ||
-        this.ChainId == 1 ||
         this.ChainId == 3 ||
         this.ChainId == 4 ||
         this.ChainId == 42
@@ -114,19 +143,16 @@ export default {
         return false;
       }
     },
-    calcTotalPrices(){
-    let totalPrices = 0;
-    if(this.items.length){
-
-// product(e.itemName[0], e.itemName[1])
-// e.quantity
-    this.items.map((e) => {
-      let itemprice = e.current_price;
-      totalPrices = totalPrices + 1 * itemprice;
-    });
-    }
-    return totalPrices.toFixed(2);
-  }
+    calcTotalPrices(_items) {
+      let totalPrices = 0;
+      if (_items.length) {
+        this.manageItems(_items).map((e) => {
+          let itemprice = e.current_price;
+          totalPrices = totalPrices + e.Quantity * itemprice;
+        });
+      }
+      return totalPrices.toFixed(2);
+    },
   },
 };
 </script>

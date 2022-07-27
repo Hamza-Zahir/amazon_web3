@@ -4,7 +4,7 @@ const Amazon = artifacts.require("./Amazon.sol");
 contract("Amazon", (accounts) => {
   let contractInstance;
   const item1_USD_Price = 12.98;
-  const item1BNBPrice = item1_USD_Price * 0.0005;
+  const item1BNBPrice = item1_USD_Price * 0.00005;
   const item1BNBPriceToWei = item1BNBPrice * 10 ** 18;
 
   before(async () => {
@@ -88,14 +88,14 @@ contract("Amazon", (accounts) => {
     await contractInstance.addItemsToStoke(["item1"], [item1BNBPriceToWei], {
       from: accounts[1],
     });
-    await contractInstance.addItemsToCart("item1", 2, false, {
+    await contractInstance.addItemsToCart("item1", 2, true, {
       from: accounts[3],
     });
     const userCart = await contractInstance.getCartItemsOfOwner(accounts[3]);
     assert.equal(userCart[1].itemName, "item1");
     assert.equal(userCart[1].Quantity, 2);
     assert.equal(userCart[1].inStoke, true);
-    assert.equal(userCart[1].isGeft, false);
+    assert.equal(userCart[1].isGeft, true);
     const hasItemsInCart = await contractInstance.isUsersHasItemsInCart(
       accounts[3]
     );
@@ -112,10 +112,13 @@ contract("Amazon", (accounts) => {
     const userCart = await contractInstance.getCartItemsOfOwner(accounts[3]);
     assert.equal(userCart[0].Quantity, 5);
     assert.equal(userCart[0].isGeft, false);
+
+    assert.equal(userCart[1].Quantity, 2);
+    assert.equal(userCart[1].isGeft, true);
   });
 
-  it("remove Item To Cart", async () => {
-    // remove oll items
+  it("remove Item from Cart", async () => {
+    // remove all items
     await contractInstance.removetemsFromCart("item2", {
       from: accounts[3],
     });
@@ -144,7 +147,7 @@ contract("Amazon", (accounts) => {
     );
 
     const UsersOrders = await contractInstance.getUsersOrders(accounts[4]);
-   const HasOrders = await contractInstance.isUsersHasOrders(accounts[4])
+    const HasOrders = await contractInstance.isUsersHasOrders(accounts[4]);
     assert(HasOrders);
     assert.equal(UsersOrders.length, 1);
 
@@ -153,14 +156,53 @@ contract("Amazon", (accounts) => {
     assert.equal(UsersOrders[0].addressTo, "Delivery Address");
     assert.equal(UsersOrders[0].message, "same message");
     assert.equal(UsersOrders[0].isGeft, true);
-
   });
+  it("buy Items", async () => {
+    await contractInstance.addItemsToStoke(
+      ["item1", "item2", "item3"],
+      [item1BNBPriceToWei, item1BNBPriceToWei * 2, item1BNBPriceToWei * 3],
+      {
+        from: accounts[1],
+      }
+    );
+    await contractInstance.buyItems(
+      ["item1", "item2", "item3"],
+      ["Delivery Address1", "Delivery Address2", "Delivery Address3"],
+      ["same message1", "", ""],
+      [2, 3, 4],
+      [true, false, false],
+      {
+        from: accounts[5],
+        value:
+          item1BNBPriceToWei * 2 +
+          item1BNBPriceToWei * 2 * 3 +
+          item1BNBPriceToWei * 3 * 4,
+      }
+    );
+
+    const UsersOrders = await contractInstance.getUsersOrders(accounts[5]);
+    const HasOrders = await contractInstance.isUsersHasOrders(accounts[5]);
+    assert(HasOrders);
+    assert.equal(UsersOrders.length, 3);
+    [true, false, false].map((e, i) => {
+      assert.equal(UsersOrders[i].itemName, `item${i + 1}`);
+      assert.equal(UsersOrders[i].Quantity, i + 2);
+      assert.equal(UsersOrders[i].addressTo, `Delivery Address${i + 1}`);
+      assert.equal(UsersOrders[i].isGeft, e);
+      if (i == 0) {
+        assert.equal(UsersOrders[i].message, `same message1`);
+      } else {
+        assert.equal(UsersOrders[i].message, ``);
+      }
+    });
+  });
+
   it("request Sent", async () => {
     await contractInstance.requestSent(accounts[4], "item1", {
       from: accounts[1],
     });
     const UsersOrders = await contractInstance.getUsersOrders(accounts[4]);
-   const HasOrders = await contractInstance.isUsersHasOrders(accounts[4])
+    const HasOrders = await contractInstance.isUsersHasOrders(accounts[4]);
     assert(!HasOrders);
 
     assert.equal(UsersOrders.length, 0);
@@ -188,7 +230,6 @@ contract("Amazon", (accounts) => {
       contractInstance.address
     );
 
-
     await contractInstance.getProfits({
       from: accounts[0],
     });
@@ -200,8 +241,5 @@ contract("Amazon", (accounts) => {
     assert(Number(old_Admin_balance) < Number(new_Admin_balance));
     assert(Number(new_Contract_balance) < Number(old_Contract_balance));
     assert.equal(Number(new_Contract_balance), 0);
-
-
-
   });
 });

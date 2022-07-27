@@ -1,19 +1,21 @@
 import Web3 from "web3";
-// import plugins from "../plugins/index";
+import plugins from "~/plugins/index";
 import axios from "axios";
 
 const state = {
   CurrentAccount: "",
   ChainId: "",
   Country: "",
-  userBlance: "",
+  itemsOfUser: [],
+  numberOfAllitems: 0,
 };
 
 const getters = {
   CurrentAccount: (state) => state.CurrentAccount,
   ChainId: (state) => state.ChainId,
   Country: (state) => state.Country,
-  userBlance: (state) => state.userBlance,
+  itemsOfUser: (state) => state.itemsOfUser,
+  numberOfAllitems: (state) => state.numberOfAllitems,
 };
 const actions = {
   async connectMetamask({ commit }) {
@@ -90,25 +92,25 @@ const actions = {
       await ethereum.request({ method: "eth_chainId" }).then((resalt) => {
         commit("setChainId", Number(resalt));
       });
-
-      //   const _userBlance = await plugins.getUserBalance(accounts[0]);
-      //   commit("setUserBlance", _userBlance);
     }
-    async function handleAccountsChanged(accounts) {
-      commit("setCurrentAccount", accounts[0]);
-      //   const _userBlance = await plugins.getUserBalance(accounts[0]);
-      //   commit("setUserBlance", _userBlance);
+    // ................................................
+    async function handleAccountsChanged() {
+      window.location.reload();
     }
-    function handleChainChanged(_chainId) {
+    async function handleChainChanged(_chainId) {
       window.location.reload();
     }
     const handleDisconnect = () => {
       disconnect();
     };
-    // ......................................
     ethereum.on("accountsChanged", handleAccountsChanged);
     ethereum.on("chainChanged", handleChainChanged);
     ethereum.on("disconnect", handleDisconnect);
+    // ......................................
+    const UserItemsCart = await plugins.getUserItemsCart(this.state.ChainId, this.state.CurrentAccount);
+    commit("setItemsOfUser", UserItemsCart.itemsOfUser);
+    commit("setNumberOfAllitems", UserItemsCart.numberOfAllitems);
+
   },
 
   async getCountry({ commit }) {
@@ -116,12 +118,23 @@ const actions = {
       commit("setCountry", response.data.country);
     });
   },
+  async getItemsOfUser({ commit }) {
+    const UserItemsCart = await plugins.getUserItemsCart(
+      this.state.ChainId,
+      this.state.CurrentAccount
+    );
+
+    commit("setItemsOfUser", UserItemsCart.itemsOfUser);
+    commit("setNumberOfAllitems", UserItemsCart.numberOfAllitems);
+  },
 };
 const mutations = {
   setCurrentAccount: (state, addres) => (state.CurrentAccount = addres),
   setChainId: (state, chainId) => (state.ChainId = chainId),
   setCountry: (state, Country) => (state.Country = Country),
-  setUserBlance: (state, userBlance) => (state.userBlance = userBlance),
+  setItemsOfUser: (state, itemsOfUser) => (state.itemsOfUser = itemsOfUser),
+  setNumberOfAllitems: (state, numberOfAllitems) =>
+    (state.numberOfAllitems = numberOfAllitems),
 };
 
 export default {

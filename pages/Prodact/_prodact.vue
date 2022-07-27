@@ -1,8 +1,9 @@
 <template>
+
   <div class="">
     <Head :items="items" :Product="itemName" />
 
-    <Item_Card :item="item" :productName="[itemName, index]" />
+    <Item_Card :item="item" :productName="this.$route.params.prodact" />
 <Mour_Prodact :items="items"  :prodactName="itemName" />
 
   </div>

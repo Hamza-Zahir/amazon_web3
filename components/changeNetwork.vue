@@ -4,15 +4,19 @@
       class="bg_orongr py-2 px-3 fw-bold d-flex justify-content-between rounded-10"
       @click="showNetworks = !showNetworks"
     >
-      {{ chainName }}
+
+      <span v-for="network in networks" :key="network.chainId" :class="network.chainId == ChainId? 'w-100 text-center':'d-none '">
+{{ network.chainName }}
+      </span>
+      {{ corectChainId(ChainId) ? "" : "network error"}}
       <b-icon icon="chevron-down" class="ms-1 pt-1"></b-icon>
     </div>
 
-    <div class="box bg_orongr  pat0l0 cp rounded-10" v-if="showNetworks">
+    <div class="box bg_orongr pat0l0 cp rounded-10" v-if="showNetworks">
       <div v-for="net in networks" :key="net.chainName">
         <div
           class="py-2 px-3 fw-bold p-1 border-top rounded-10"
-          :class="net.chainName == chainName ? 'd-none' : ''"
+          :class="net.chainId == ChainId ? 'd-none' : ''"
           @click="
             () => {
               chengNetwork(net);
@@ -34,32 +38,24 @@ export default {
   data() {
     return {
       networks,
-      chainId: 0,
-      chainName: "network error",
       showNetworks: false,
     };
   },
   computed: {
     ...mapGetters(["CurrentAccount"]),
+    ...mapGetters(["ChainId"]),
   },
   mounted() {
     this.manegChainId();
-    this.getchainID();
   },
   methods: {
-    ...mapActions(["checkWalletIsConnected"]),
     ...mapActions(["connectMetamask"]),
-    async getchainID() {
-      await this.checkWalletIsConnected();
-      const ethereum = window.ethereum;
-      const chainId = await ethereum.request({ method: "eth_chainId" });
-      this.chainId = chainId;
-      networks.map((e) => {
-        if (e.chainId == chainId) {
-          this.chainName = e.chainName;
-
-        }
-      });
+    corectChainId(_ChainId) {
+      if (_ChainId == 97 || _ChainId == 3 || _ChainId == 4 || _ChainId == 42) {
+        return true;
+      } else {
+        return false;
+      }
     },
     manegChainId() {
       networksManage.map((e) => {
@@ -91,18 +87,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
-.Switsh_Network_btn{
+.Switsh_Network_btn {
   z-index: 9999;
   font-size: 13px;
   position: relative;
-.box{
-  position: absolute;
-  width: 100%;
+  .box {
+    position: absolute;
+    width: 100%;
+  }
 }
-
-}
-
-
-
 </style>

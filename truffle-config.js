@@ -3,9 +3,9 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const fs = require('fs');
-const mnemonic = fs.readFileSync(".secret").toString().trim();
-const bscscan_api_key = fs.readFileSync(".bscscan_api_key").toString().trim();
-const etherscan_API_KEY = fs.readFileSync(".etherscan_API_KEY").toString().trim();
+const mnemonic = fs.readFileSync("._secret").toString().trim();
+const bscscan_api_key = fs.readFileSync("._bscscan_api_key").toString().trim();
+const etherscan_API_KEY = fs.readFileSync("._etherscan_API_KEY").toString().trim();
 
 module.exports = {
 
@@ -16,6 +16,8 @@ module.exports = {
     //      etherscan: etherscan_API_KEY,
 
 /*
+ // truffle migrate --network NetworkName
+
 npm install -D truffle-plugin-verify
 truffle run verify contractName@contractAdress --network NetworkName
 */
@@ -70,10 +72,16 @@ truffle run verify contractName@contractAdress --network NetworkName
   },
 
 
-
+// old_Contracts
   // ropsten : 0x9207FbB18805f338e3810a3Cf9502d7b0FCA31B1
   // kovan :   0x78cf0Ba53f4DfeD9F36C97F74f76848DB04F3561
   // rinkeby : 0xbCc9e5e119Fc194772bEE02F1B3010E8D21b2C94
   // bscTestnet : 0x24191b423D0Ec4bCd6F6eeC4dafba7CEEe93b5BC
+
+  // new_contracts
+   // ropsten :   0x54F44D0E621935b9EEC056a3dfB463977827e861
+  // kovan :      0xBC5299De1A31b2aC1B486747DC90eA8Fa561Eb6E
+  // rinkeby :    0x3316C6a5AD63B323d554f5B97fc604eF7b3ddfD0
+  // bscTestnet : 0x5822bE3556a5acDB859e0dC25Dff59f2eB38b492
 
 };

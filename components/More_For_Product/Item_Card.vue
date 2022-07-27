@@ -40,10 +40,9 @@
 
         <div class="border Information bg-light d-lg-none">
           <Information_Card
-            :current_price="item.current_price"
-
+            :current_price="Number(item.current_price)"
+            :productName="productName"
           />
-          <!-- :productName="productName" -->
         </div>
         <div class="about">
           <h4 class="m-2 fw-bold">About this item</h4>
@@ -76,11 +75,10 @@
       </div>
 
       <div class="border Information bg-light d-none d-lg-block">
-        <Information_Card
-            :current_price="item.current_price"
-
+  <Information_Card
+            :current_price="Number(item.current_price)"
+            :productName="productName"
           />
-           <!-- :productName="productName" -->
       </div>
     </div>
   </div>
@@ -98,7 +96,7 @@ Information_Card
     },
     productName: {
       required: true,
-      type: Array,
+      type: String,
     },
   },
   methods: {
@@ -107,6 +105,7 @@ Information_Card
       return `$${saved.toFixed(2)} (${(saved / (old_price / 100)).toFixed(
         0
       )}%)`;
+
     },
   },
 };
